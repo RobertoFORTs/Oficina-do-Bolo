@@ -1,4 +1,5 @@
 # Oficina-do-Bolo
+- Roberto Fortes e Pedro Nicolleti
 
 ## Visão Geral
 
