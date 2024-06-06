@@ -39,3 +39,5 @@ Bem-vindo ao Oficina do Bolo, um aplicativo mobile Android projetado para entusi
 
 ### 8. Escolha de Música Clássica para a Oficina
 - Ofereça uma seleção de músicas clássicas (por exemplo, Mozart) que os usuários podem escolher para tocar durante as oficinas.
+## Tecnologias Utilizadas
+- Banco de dados Room
