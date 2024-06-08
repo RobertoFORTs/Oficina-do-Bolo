@@ -35,13 +35,10 @@ public class Bolo {
         this.nomeBolo = nomeBolo;
     }
 
-    public String setDescBolo() {
-        return descBolo;
-    }
-
     public void setDescBolo(String descBolo) {
         this.descBolo = descBolo;
     }
+    public String getDescBolo(){return descBolo;}
 
     public String getIngredientes() {
         return ingredientes;
