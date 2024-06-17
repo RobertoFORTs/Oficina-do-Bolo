@@ -26,6 +26,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(it);
             }
         });
+        binding.btnCrudBolo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it=new Intent(MainActivity.this,RegistrarBoloActivity.class);
+                startActivity(it);
+            }
+        });
 
 
     }
