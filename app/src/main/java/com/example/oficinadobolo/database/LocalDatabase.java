@@ -19,7 +19,7 @@ import com.example.oficinadobolo.entities.Usuario;
 @TypeConverters({ConversorData.class})
 public abstract class LocalDatabase extends RoomDatabase {
     private static LocalDatabase INSTANCE;
-    private static LocalDatabase getDataBase(Context context){
+    public static LocalDatabase getDatabase(Context context){
         if(INSTANCE == null){
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(), LocalDatabase.class, "OficinaDoBolo").allowMainThreadQueries().build();
         }

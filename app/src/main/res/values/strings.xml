@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">OficinaDoBolo</string>
     <string name="tituloMain">Oficina do Bolo</string>
+    <string name="crudUsuario">Registrar Usuário</string>
+    <string name="crudOficina">Registrar Oficina</string>
+    <string name="crudBolo">Registrar Bolo</string>
+    <string name="tituloRegistrar">Registro de Usuários</string>
 </resources>
