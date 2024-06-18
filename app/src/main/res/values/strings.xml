@@ -6,4 +6,5 @@
     <string name="crudBolo">Registrar Bolo</string>
     <string name="tituloRegistrar">Registro de Usuários</string>
     <string name="tituloRegistrarBolo">Registro de Bolos</string>
+    <string name="tituloRegistrarOficina">Registro de Oficinas</string>
 </resources>
