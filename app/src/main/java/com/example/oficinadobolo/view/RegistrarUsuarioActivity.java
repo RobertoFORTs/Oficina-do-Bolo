@@ -1,116 +1,111 @@
 package com.example.oficinadobolo.view;
-import androidx.appcompat.app.AlertDialog;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.oficinadobolo.dao.UsuarioDao;
 import com.example.oficinadobolo.database.LocalDatabase;
 import com.example.oficinadobolo.databinding.ActivityRegistrarUsuarioBinding;
 import com.example.oficinadobolo.entities.Usuario;
 
+import java.util.Objects;
+
 public class RegistrarUsuarioActivity extends AppCompatActivity {
-
-    private LocalDatabase db;
-
     private ActivityRegistrarUsuarioBinding binding;
-
-    private Usuario dbUsuarios;
-
-    private int dbUsuarioID;
+    private Intent intent;
+    private UsuarioDao usuarioDao;
+    private LocalDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityRegistrarUsuarioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        if (getSupportActionBar() != null) getSupportActionBar().hide();
+        getWindow().setStatusBarColor(Color.parseColor("#FFFFFF"));
+
+        String text = Objects.requireNonNull(binding.txtTelaLogin.getText()).toString();
+        SpannableString spannableString = new SpannableString(text);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                Intent intent = new Intent(RegistrarUsuarioActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        };
+
+        int start = text.indexOf("Entre aqui!");
+        int end = start + "Entre aqui!".length();
+        spannableString.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        binding.txtTelaLogin.setText(spannableString);
+        binding.txtTelaLogin.setMovementMethod(LinkMovementMethod.getInstance());
+
         db = LocalDatabase.getDatabase(getApplicationContext());
-        dbUsuarioID = getIntent().getIntExtra("USUARIO_SELECIONADO_ID", -1);
-
-        binding.btnVoltarRegistrar.setOnClickListener(new View.OnClickListener() {
+        usuarioDao = db.usuarioModel();
+        binding.btRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // finaliza a atividade atual, voltando para a main automaticamente.
-                finish();
+                registrarUsuario();
             }
         });
+    }
 
-        binding.btnCadastrar.setOnClickListener(new View.OnClickListener() {
+    @Override
+    protected void onResume(){
+        super.onResume();
+        intent = new Intent(this, CrudsActivity.class);
+    }
+
+    private void registrarUsuario() {
+        String nome = binding.editNome.getText().toString().trim();
+        String email = binding.editEmail.getText().toString().trim();
+        String senha = binding.editSenha.getText().toString().trim();
+
+        if (TextUtils.isEmpty(nome)) {
+            binding.editNome.setError("Nome é obrigatório");
+            return;
+        }
+
+        if (TextUtils.isEmpty(email)) {
+            binding.editEmail.setError("Email é obrigatório");
+            return;
+        }
+
+        if (TextUtils.isEmpty(senha)) {
+            binding.editSenha.setError("Senha é obrigatória");
+            return;
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(nome);
+        usuario.setEmail(email);
+        usuario.setSenha(senha);
+
+        new Thread(new Runnable() {
             @Override
-            public void onClick(View v) {
-                saveUsuario(v);
-            }
-        });
-
-    }
-
-
-    public void saveUsuario(View view){
-        String nomeUsuario = binding.edtNomeRegistrar.getText().toString();
-        if (nomeUsuario.equals("")) {
-            Toast.makeText(this, "Adicione um nome.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        String nomeEmail = binding.edtEmailRegistrar.getText().toString();
-        if (nomeEmail.equals("")) {
-            Toast.makeText(this, "Adicione um email.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(nomeEmail).matches()) {
-            Toast.makeText(this, "Formato de email inválido.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String nomeSenha = binding.edtSenhaRegistrar.getText().toString();
-        if (nomeSenha.equals("")) {
-            Toast.makeText(this, "Adicione uma senha.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Usuario thisUsuario = new Usuario();
-        thisUsuario.setNome(nomeUsuario);
-        thisUsuario.setEmail(nomeEmail);
-        thisUsuario.setSenha(nomeSenha);
-
-        db.usuarioModel().insertAll(thisUsuario);
-        Toast.makeText(this, "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
-
-        Intent it = new Intent(RegistrarUsuarioActivity.this, MainActivity.class);
-        startActivity(it);
-        finish();
-
-    }
-
-    private void getDBUsuarios(){
-        dbUsuarios = db.usuarioModel().getUsuario(dbUsuarioID);
-        binding.edtEmailRegistrar.setText(dbUsuarios.getEmail());
-        binding.edtSenhaRegistrar.setText(dbUsuarios.getSenha());
-        binding.edtNomeRegistrar.setText(dbUsuarios.getNome());
-    }
-
-    private void deleteUsuario(View view){
-        new AlertDialog.Builder(this)
-                .setTitle("Exclusão de Usuário")
-                .setMessage("Deseja excluir esse Usuário?")
-                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void run() {
+                usuarioDao.insertAll(usuario);
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        excluir();
+                    public void run() {
+                        Toast.makeText(RegistrarUsuarioActivity.this, "Usuário registrado com sucesso!", Toast.LENGTH_SHORT).show();
                     }
-                })
-                .setNegativeButton("Não", null)
-                .show();
+                });
+            }
+        }).start();
     }
-
-    private void excluir() {
-        db.usuarioModel().delete(dbUsuarios);
-        Toast.makeText(this, "Usuário excluído com sucesso", Toast.LENGTH_SHORT).show();
-        finish();
-    }
-
-
 }

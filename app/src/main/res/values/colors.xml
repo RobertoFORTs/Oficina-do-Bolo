@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="dark_cyan_green">#80a86b</color>
+
+    <!-- Logo Colors -->
+    <color name="green_logo">#23BE7E</color>
+    <!--    -->
+
+    <!--    Cores botões tela opções-->
+    <color name="colorBotao1">#FF6F61</color>
+    <color name="colorBotao2">#6B5B95</color>
+    <color name="colorBotao3">#88B04B</color>
+    <color name="colorBotao4">#F7CAC9</color>
+    <color name="colorBotao5">#92A8D1</color>
+    <color name="colorTextBotoes">#000000</color>
+    <!-- Azul claro para o fundo principal -->
+    <color name="light_blue_background">#E0F7FA</color>
+
+    <!-- Azul escuro para o fundo do título -->
+    <color name="dark_blue_background">#01579B</color>
+
+    <!-- Azul escuro para a borda dos campos de texto -->
+    <color name="dark_blue">#0288D1</color>
+
+    <!-- Branco para o texto -->
+    <color name="white">#FFFFFF</color>
+
+    <!-- Preto para o texto -->
+    <color name="black">#000000</color>
+
+    <!-- Vermelho para o texto de erro -->
+    <color name="red">#D32F2F</color>
+
+
 </resources>
