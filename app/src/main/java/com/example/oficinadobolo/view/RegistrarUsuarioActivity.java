@@ -1,13 +1,13 @@
 package com.example.oficinadobolo.view;
-
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
-
 import com.example.oficinadobolo.database.LocalDatabase;
 import com.example.oficinadobolo.databinding.ActivityRegistrarUsuarioBinding;
 import com.example.oficinadobolo.entities.Usuario;
@@ -18,12 +18,17 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
 
     private ActivityRegistrarUsuarioBinding binding;
 
+    private Usuario dbUsuarios;
+
+    private int dbUsuarioID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityRegistrarUsuarioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         db = LocalDatabase.getDatabase(getApplicationContext());
+        dbUsuarioID = getIntent().getIntExtra("USUARIO_SELECIONADO_ID", -1);
 
         binding.btnVoltarRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +83,33 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
         startActivity(it);
         finish();
 
+    }
+
+    private void getDBUsuarios(){
+        dbUsuarios = db.usuarioModel().getUsuario(dbUsuarioID);
+        binding.edtEmailRegistrar.setText(dbUsuarios.getEmail());
+        binding.edtSenhaRegistrar.setText(dbUsuarios.getSenha());
+        binding.edtNomeRegistrar.setText(dbUsuarios.getNome());
+    }
+
+    private void deleteUsuario(View view){
+        new AlertDialog.Builder(this)
+                .setTitle("Exclusão de Usuário")
+                .setMessage("Deseja excluir esse Usuário?")
+                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        excluir();
+                    }
+                })
+                .setNegativeButton("Não", null)
+                .show();
+    }
+
+    private void excluir() {
+        db.usuarioModel().delete(dbUsuarios);
+        Toast.makeText(this, "Usuário excluído com sucesso", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
 
