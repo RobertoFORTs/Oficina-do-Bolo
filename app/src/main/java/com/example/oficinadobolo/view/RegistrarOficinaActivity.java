@@ -65,7 +65,7 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
         db.oficinaModel().insertAll(thisOficina);
         Toast.makeText(this, "Oficina criada com sucesso.", Toast.LENGTH_SHORT).show();
 
-        Intent it = new Intent(RegistrarOficinaActivity.this, MainActivity.class);
+        Intent it = new Intent(RegistrarOficinaActivity.this, LoginActivity.class);
         startActivity(it);
         finish();
     }

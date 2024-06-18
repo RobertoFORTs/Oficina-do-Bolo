@@ -7,4 +7,11 @@
     <string name="tituloRegistrar">Registro de Usuários</string>
     <string name="tituloRegistrarBolo">Registro de Bolos</string>
     <string name="tituloRegistrarOficina">Registro de Oficinas</string>
+    <string name="hint_email">email</string>
+    <string name="hint_senha">password</string>
+    <string name="txt_button_entrar">Login</string>
+    <string name="txt_tela_cadastro">Não possui conta? Cadastre-se!</string>
+    <string name="txt_button_registrar">Cadastre-se!</string>
+    <string name="txt_tela_login">Já possui uma conta? Entre aqui!</string>
+    <string name="hint_nome">nome</string>
 </resources>
