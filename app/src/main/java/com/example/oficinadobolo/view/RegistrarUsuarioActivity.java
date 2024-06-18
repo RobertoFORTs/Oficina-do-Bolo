@@ -67,7 +67,7 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        intent = new Intent(this, OpcoesActivity.class);
+        intent = new Intent(this, CrudsActivity.class);
     }
 
     private void registrarUsuario() {

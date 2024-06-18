@@ -13,6 +13,9 @@
         android:theme="@style/Theme.OficinaDoBolo"
         tools:targetApi="31">
         <activity
+            android:name=".view.CrudsActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.RegistrarOficinaActivity"
             android:exported="false" />
         <activity

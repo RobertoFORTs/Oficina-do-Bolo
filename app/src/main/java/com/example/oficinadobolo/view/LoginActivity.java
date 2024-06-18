@@ -43,8 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                //Intent intent = new Intent(LoginActivity.this, CriarUsuarioActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(LoginActivity.this, RegistrarUsuarioActivity.class);
+                startActivity(intent);
             }
         };
 
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        //intent = new Intent(this, OpcoesActivity.class);
+        intent = new Intent(this, CrudsActivity.class);
     }
 
     private void login(View view) {
