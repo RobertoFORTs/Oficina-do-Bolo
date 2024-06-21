@@ -5,7 +5,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -15,7 +14,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.SpannableString;
@@ -25,7 +23,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.oficinadobolo.dao.UsuarioDao;
@@ -51,7 +48,6 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
             Manifest.permission.CAMERA
     };
     private ActivityRegistrarUsuarioBinding binding;
-    private ImageView contactImageView;
     private Intent intent;
     private UsuarioDao usuarioDao;
     private LocalDatabase db;
@@ -111,6 +107,13 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
                 Log.e(TAG, "Erro ao verificar permissões ou exibir diálogo de fotos: ", e);
             }
         });
+
+        // Restaurar estado após a rotação da tela
+        if (savedInstanceState != null) {
+            binding.editNome.setText(savedInstanceState.getString("nome"));
+            binding.editEmail.setText(savedInstanceState.getString("email"));
+            binding.editSenha.setText(savedInstanceState.getString("senha"));
+        }
     }
 
     private final ActivityResultLauncher<String[]> requestPermissionsLauncher = registerForActivityResult(
@@ -135,7 +138,7 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
                     Bundle extras = result.getData().getExtras();
                     assert extras != null;
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    contactImageView.setImageBitmap(imageBitmap);
+                    binding.imageViewFoto.setImageBitmap(imageBitmap); // Corrigir o uso da ImageView correta
                     contactPhotoUri = ImageUtils.saveImageToExternalStorage(this, imageBitmap);
                     if (contactPhotoUri != null) {
                         Toast.makeText(this, "Imagem salva com sucesso!", Toast.LENGTH_SHORT).show();
@@ -185,19 +188,17 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
             }
         }).start();
     }
+
     private void showPhotoDialog() {
-        System.out.println("CHEGUEI");
         new AlertDialog.Builder(this)
                 .setTitle("Adicione Foto")
                 .setItems(new String[]{"Acesse sua câmera"}, (dialog, which) -> {
-                    System.out.println("AAAAAA aqui");
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    System.out.println("Estou aqui");
                     takePictureLauncher.launch(takePictureIntent);
-
                 })
                 .show();
     }
+
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -205,18 +206,12 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
         outState.putString("email", binding.editEmail.getText().toString());
         outState.putString("senha", binding.editSenha.getText().toString());
     }
+
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         binding.editNome.setText(savedInstanceState.getString("nome"));
         binding.editEmail.setText(savedInstanceState.getString("email"));
         binding.editSenha.setText(savedInstanceState.getString("senha"));
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        intent = new Intent(this, CrudsActivity.class);
     }
 }
