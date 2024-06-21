@@ -30,6 +30,13 @@ public class CrudsActivity extends AppCompatActivity {
                 startActivity(it);
             }
         });
+        binding.btnCrudOficina.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it=new Intent(CrudsActivity.this, OficinaList.class);
+                startActivity(it);
+            }
+        });
     }
 
 

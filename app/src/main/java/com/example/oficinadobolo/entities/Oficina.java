@@ -2,6 +2,9 @@ package com.example.oficinadobolo.entities;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.example.oficinadobolo.adapters.ConversorData;
 
 import java.util.Date;
 
@@ -14,6 +17,7 @@ public class Oficina {
     private int oficinaID;
     private String nomeOficina;
     private String descOficina;
+    @TypeConverters(ConversorData.class)
     private Date dataOficina;
     private int usuarioID;
 
