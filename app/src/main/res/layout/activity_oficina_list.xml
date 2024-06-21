@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.UsuariosList">
+    tools:context=".view.OficinaList">
 
     <ListView
-        android:id="@+id/listUsuarios"
+        android:id="@+id/listOficinas"
         android:layout_width="409dp"
         android:layout_height="450dp"
         android:layout_marginStart="1dp"
@@ -16,23 +16,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/btnHomeUsuarios"
+        android:id="@+id/btnHomeOficinas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="116dp"
         android:layout_marginTop="88dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listUsuarios"
+        app:layout_constraintTop_toBottomOf="@+id/listOficinas"
         app:srcCompat="@drawable/baseline_home_24" />
 
     <ImageButton
-        android:id="@+id/btnAdd"
+        android:id="@+id/btnAddOficinas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
         android:layout_marginTop="88dp"
-        app:layout_constraintStart_toEndOf="@+id/btnHomeUsuarios"
-        app:layout_constraintTop_toBottomOf="@+id/listUsuarios"
+        app:layout_constraintStart_toEndOf="@+id/btnHomeOficinas"
+        app:layout_constraintTop_toBottomOf="@+id/listOficinas"
         app:srcCompat="@drawable/baseline_add_circle_outline_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,8 +65,9 @@ public class RegistrarBoloActivity extends AppCompatActivity {
         db.boloModel().insertAll(thisBolo);
         Toast.makeText(this, "Bolo criado com sucesso.", Toast.LENGTH_SHORT).show();
 
-        Intent it = new Intent(RegistrarBoloActivity.this, LoginActivity.class);
+        Intent it = new Intent(RegistrarBoloActivity.this, BoloList.class);
         startActivity(it);
         finish();
     }
+
 }

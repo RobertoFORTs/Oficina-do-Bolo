@@ -4,7 +4,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Bolo {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int boloID;
     private String nomeBolo;
     private String descBolo;

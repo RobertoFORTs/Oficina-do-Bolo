@@ -19,14 +19,21 @@ public class CrudsActivity extends AppCompatActivity {
         binding.btnCrudUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it=new Intent(CrudsActivity.this,RegistrarUsuarioActivity.class);
+                Intent it=new Intent(CrudsActivity.this, UsuariosList.class);
                 startActivity(it);
             }
         });
         binding.btnCrudBolo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it=new Intent(CrudsActivity.this,RegistrarBoloActivity.class);
+                Intent it=new Intent(CrudsActivity.this, BoloList.class);
+                startActivity(it);
+            }
+        });
+        binding.btnCrudOficina.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it=new Intent(CrudsActivity.this, OficinaList.class);
                 startActivity(it);
             }
         });
