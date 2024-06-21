@@ -26,7 +26,7 @@ public class CrudsActivity extends AppCompatActivity {
         binding.btnCrudBolo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it=new Intent(CrudsActivity.this, RegistrarBoloActivity.class);
+                Intent it=new Intent(CrudsActivity.this, BoloList.class);
                 startActivity(it);
             }
         });

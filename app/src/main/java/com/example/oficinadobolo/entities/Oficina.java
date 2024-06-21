@@ -10,7 +10,7 @@ import java.util.Date;
         ))
 public class Oficina {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int oficinaID;
     private String nomeOficina;
     private String descOficina;
