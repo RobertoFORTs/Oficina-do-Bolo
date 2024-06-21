@@ -2,10 +2,13 @@ package com.example.oficinadobolo.database;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.oficinadobolo.adapters.ConversorData;
 import com.example.oficinadobolo.dao.BoloDao;
@@ -25,6 +28,7 @@ public abstract class LocalDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
+
     public abstract UsuarioDao usuarioModel();
     public abstract BoloDao boloModel();
     public abstract OficinaDao oficinaModel();

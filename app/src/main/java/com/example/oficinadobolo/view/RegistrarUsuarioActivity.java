@@ -132,6 +132,7 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
                     Log.d(TAG, "Nem todas as permissões foram concedidas");
                 }
             });
+
     private final ActivityResultLauncher<Intent> takePictureLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
@@ -169,10 +170,28 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
             return;
         }
 
+        // Verificar se a foto foi tirada
+        if (contactPhotoUri == null) {
+            Toast.makeText(this, "A foto é obrigatória", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Converter a URI da foto para bytes
+        byte[] fotoBytes;
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contactPhotoUri);
+            fotoBytes = ImageUtils.bitmapToBytes(bitmap);
+        } catch (Exception e) {
+            Log.e(TAG, "Erro ao converter a imagem para bytes: ", e);
+            Toast.makeText(this, "Erro ao processar a foto", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Usuario usuario = new Usuario();
         usuario.setNome(nome);
         usuario.setEmail(email);
         usuario.setSenha(senha);
+        usuario.setFoto(fotoBytes); // Supondo que o campo `foto` existe na entidade Usuario
 
         // Exemplo de inserção assíncrona no banco de dados
         new Thread(new Runnable() {
@@ -183,11 +202,16 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(RegistrarUsuarioActivity.this, "Usuário registrado com sucesso!", Toast.LENGTH_SHORT).show();
+                        // Após o sucesso no registro, vá para a tela de login
+                        Intent intent = new Intent(RegistrarUsuarioActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish(); // Finalizar a Activity atual para evitar retorno com o botão "voltar"
                     }
                 });
             }
         }).start();
     }
+
 
     private void showPhotoDialog() {
         new AlertDialog.Builder(this)
