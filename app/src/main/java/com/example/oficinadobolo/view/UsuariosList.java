@@ -32,6 +32,20 @@ public class UsuariosList extends AppCompatActivity {
         db = LocalDatabase.getDatabase(getApplicationContext());
         listViewUsuarios = binding.listUsuarios;
 
+        binding.btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UsuariosList.this, RegistrarUsuarioActivity.class));
+            }
+        });
+
+        binding.btnHomeUsuarios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
     }
 
