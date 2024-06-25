@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.oficinadobolo.R;
+import com.example.oficinadobolo.database.LocalDatabase;
 import com.example.oficinadobolo.entities.Oficina;
 import java.util.List;
 
@@ -17,11 +18,13 @@ public class OficinaAdapter extends ArrayAdapter<Oficina> {
     private Context context;
 
     private List<Oficina> oficinas;
+    private LocalDatabase db;
 
     public OficinaAdapter(@NonNull Context context, @NonNull List<Oficina> oficinas){
         super(context, 0, oficinas);
         this.context = context;
         this.oficinas = oficinas;
+        this.db = LocalDatabase.getDatabase(context);
     }
 
     @NonNull
@@ -29,7 +32,7 @@ public class OficinaAdapter extends ArrayAdapter<Oficina> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
         if(listItem == null) {
-            listItem = LayoutInflater.from(context).inflate(R.layout.item_bolo, parent, false);
+            listItem = LayoutInflater.from(context).inflate(R.layout.item_oficina, parent, false);
         }
 
         Oficina currentOficina = oficinas.get(position);
