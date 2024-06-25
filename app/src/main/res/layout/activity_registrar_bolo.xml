@@ -96,7 +96,20 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="49dp"
         android:layout_marginBottom="173dp"
-        android:text="Cadastrar"
+        android:text="Salvar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnExcluirBolo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="173dp"
+        android:onClick="deleteBolo"
+        android:text="Excluir"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnCadastrarBolo"
+        app:layout_constraintStart_toEndOf="@+id/btnVoltarBolo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
