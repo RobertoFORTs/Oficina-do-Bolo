@@ -1,16 +1,16 @@
 package com.example.oficinadobolo.entities;
+
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
-
 import com.example.oficinadobolo.adapters.ConversorData;
 
 import java.util.Date;
 
 @Entity(foreignKeys = @ForeignKey(entity = Usuario.class,
         parentColumns = "usuarioID", childColumns = "usuarioID"
-        ))
+))
 public class Oficina {
 
     @PrimaryKey(autoGenerate = true)
@@ -20,16 +20,10 @@ public class Oficina {
     @TypeConverters(ConversorData.class)
     private Date dataOficina;
     private int usuarioID;
+    private double latitude; // Novo campo
+    private double longitude; // Novo campo
 
-    public Oficina(){}
-
-    public Oficina(int oficinaID, String nomeOficina, String descOficina, Date dataOficina, int usuarioID) {
-        this.oficinaID = oficinaID;
-        this.nomeOficina = nomeOficina;
-        this.descOficina = descOficina;
-        this.dataOficina = dataOficina;
-        this.usuarioID = usuarioID;
-    }
+    // Getters e setters
 
     public int getOficinaID() {
         return oficinaID;
@@ -71,6 +65,24 @@ public class Oficina {
         this.usuarioID = usuarioID;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     @Override
-    public String toString(){return nomeOficina;}
+    public String toString() {
+        return nomeOficina;
+    }
 }

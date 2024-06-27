@@ -5,9 +5,11 @@ import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -61,6 +63,13 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
             }
         });
 
+
+        binding.btnAbrirMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLocationInMaps();
+            }
+        });
     }
 
     @Override
@@ -74,9 +83,9 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
         fillUsers();
     }
 
-    private void fillOficina(){
+    private void fillOficina() {
         dbOficina = db.oficinaModel().getOficina(dbOficinaID);
-        if(dbOficina != null){
+        if (dbOficina != null) {
             binding.edtDescricaoOficina.setText(dbOficina.getDescOficina());
             binding.edtNomeOficina.setText(dbOficina.getNomeOficina());
 
@@ -84,6 +93,9 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             String dataOficinaString = sdf.format(dataOficina);
             binding.edtDataOficina.setText(dataOficinaString);
+
+            binding.edtLatitude.setText(String.valueOf(dbOficina.getLatitude()));
+            binding.edtLongitude.setText(String.valueOf(dbOficina.getLongitude()));
         }
     }
 
@@ -101,7 +113,7 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
         String nomeOficina = binding.edtNomeOficina.getText().toString();
         String newUser = "";
 
-        if(spinner.getSelectedItem() != null){
+        if (spinner.getSelectedItem() != null) {
             newUser = spinner.getSelectedItem().toString();
         }
         if (nomeOficina.equals("")) {
@@ -118,8 +130,18 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
             Toast.makeText(this, "Adicione uma data.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(newUser.isEmpty()) {
+        if (newUser.isEmpty()) {
             Toast.makeText(this, "Entre com um Usuário.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        double latitude;
+        double longitude;
+        try {
+            latitude = Double.parseDouble(binding.edtLatitude.getText().toString());
+            longitude = Double.parseDouble(binding.edtLongitude.getText().toString());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Latitude e Longitude inválidas.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -137,6 +159,8 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
         thisOficina.setDescOficina(nomeDescricao);
         thisOficina.setDataOficina(dataOficina);
         thisOficina.setUsuarioID(usuarios.get(spinner.getSelectedItemPosition()).getUsuarioID());
+        thisOficina.setLatitude(latitude);
+        thisOficina.setLongitude(longitude);
 
         if (dbOficina != null) {
             thisOficina.setOficinaID(dbOficinaID);
@@ -186,5 +210,43 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
+
+    private void openLocationInMaps() {
+        String latitudeText = binding.edtLatitude.getText().toString();
+        String longitudeText = binding.edtLongitude.getText().toString();
+
+        if (latitudeText.isEmpty() || longitudeText.isEmpty()) {
+            Toast.makeText(this, "Latitude e Longitude são obrigatórios", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        double latitude;
+        double longitude;
+        try {
+            latitude = Double.parseDouble(latitudeText);
+            longitude = Double.parseDouble(longitudeText);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Latitude e Longitude devem ser números válidos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int zoomLevel = 15; // Ajuste o nível de zoom conforme necessário
+        String uri = String.format("geo:%s,%s?q=%s,%s&z=%d", latitude, longitude, latitude, longitude, zoomLevel);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        intent.setPackage("com.google.android.apps.maps");
+
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            // Tenta abrir no Maps se a aplicação não estiver instalada
+            Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            try {
+                startActivity(unrestrictedIntent);
+            } catch (ActivityNotFoundException innerEx) {
+                Toast.makeText(this, "Nenhuma aplicação de mapas encontrada", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
 }
