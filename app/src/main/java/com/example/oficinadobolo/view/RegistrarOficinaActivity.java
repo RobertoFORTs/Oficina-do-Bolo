@@ -1,7 +1,11 @@
 package com.example.oficinadobolo.view;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +16,12 @@ import com.example.oficinadobolo.database.LocalDatabase;
 import com.example.oficinadobolo.databinding.ActivityRegistrarOficinaBinding;
 import com.example.oficinadobolo.entities.Oficina;
 import com.example.oficinadobolo.entities.Usuario;
+import com.example.oficinadobolo.utils.NotificationReceiver;
 
 import android.widget.Spinner;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -141,6 +147,8 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
             Toast.makeText(this, "Oficina criada com sucesso.", Toast.LENGTH_SHORT).show();
         }
 
+        scheduleNotification(thisOficina.getDataOficina());
+
         Intent it = new Intent(RegistrarOficinaActivity.this, OficinaList.class);
         startActivity(it);
         finish();
@@ -164,6 +172,19 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
         db.oficinaModel().delete(dbOficina);
         Toast.makeText(this, "Oficina excluída com sucesso.", Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    @SuppressLint("ScheduleExactAlarm")
+    private void scheduleNotification(Date oficinaDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(oficinaDate);
+        calendar.add(Calendar.DAY_OF_YEAR, -1); // 1 dia antes da oficina
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
 }
