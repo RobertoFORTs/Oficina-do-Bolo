@@ -164,5 +164,15 @@
         app:layout_constraintStart_toEndOf="@+id/edtLongitude"
         app:layout_constraintTop_toBottomOf="@+id/txtTituloOficina" />
 
+    <Button
+        android:id="@+id/btnTocarMusica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="224dp"
+        android:layout_marginTop="24dp"
+        android:text="Tocar Música"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAbrirMaps" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

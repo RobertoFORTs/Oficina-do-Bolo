@@ -9,11 +9,14 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import com.example.oficinadobolo.R;
 import com.example.oficinadobolo.database.LocalDatabase;
 import com.example.oficinadobolo.databinding.ActivityRegistrarOficinaBinding;
 import com.example.oficinadobolo.entities.Oficina;
@@ -37,6 +40,7 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
     private Spinner spinner;
     private List<Usuario> usuarios;
     private ArrayAdapter<Usuario> usuarioArrayAdapter;
+    private MediaPlayer mediaPlayer;
 
 
     @Override
@@ -68,6 +72,13 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openLocationInMaps();
+            }
+        });
+
+        binding.btnTocarMusica.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tocarMusica();
             }
         });
     }
@@ -248,5 +259,26 @@ public class RegistrarOficinaActivity extends AppCompatActivity {
         }
     }
 
+    private void tocarMusica() {
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.musica0);
+        }
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+            Toast.makeText(this, "Música pausada", Toast.LENGTH_SHORT).show();
+        } else {
+            mediaPlayer.start();
+            Toast.makeText(this, "Música tocando", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        super.onDestroy();
+    }
 
 }
